@@ -73,10 +73,8 @@ export default function VoiceInput({ status, onTranscript, onListening, onCancel
         </button>
       )}
 
-      {!isBusy && !isListening && (
-        <p className={`font-bold text-base text-center ${disabled ? "text-gray-300" : "text-purple-400"}`}>
-          {disabled ? "בחרי תמונה קודם" : "לחצי והחזיקי"}
-        </p>
+      {!isBusy && !isListening && disabled && (
+        <p className="font-bold text-base text-center text-gray-300">בחרי תמונה קודם</p>
       )}
       {isListening && interim && (
         <div className="card px-5 py-3 text-center max-w-xs animate-pop">

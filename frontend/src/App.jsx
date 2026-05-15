@@ -5,7 +5,7 @@ import ShareModal from "./components/ShareModal";
 import PhotoInput from "./components/PhotoInput";
 import LoadingScreen from "./components/LoadingScreen";
 import Logo from "./components/Logo";
-import { Mic, Camera, ArrowLeft, X } from "lucide-react";
+import { Mic, Camera, ArrowLeft, X, Paintbrush2, ImagePlus, Crown, Star } from "lucide-react";
 import axios from "axios";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
@@ -112,7 +112,9 @@ export default function App() {
               <X size={15}/>
             </button>
           )}
-          <span className="text-lg font-black text-purple-700">כרמל 👑</span>
+          <span className="text-lg font-black text-purple-700 flex items-center gap-1">
+            כרמל <Crown size={18} className="text-yellow-400" fill="#facc15"/>
+          </span>
         </div>
       </div>
 
@@ -122,7 +124,7 @@ export default function App() {
         {!mode && (
           <div className="flex flex-col items-center gap-6 animate-pop">
             <div className="text-center">
-              <p className="text-5xl mb-2">🌟</p>
+              <Star size={52} className="text-yellow-400 mx-auto mb-2" fill="#facc15" strokeWidth={1}/>
               <p className="text-3xl font-black text-purple-800 leading-tight">היי כרמל!<br/>מה נצייר היום?</p>
             </div>
             <div className="grid grid-cols-2 gap-4 w-full">
@@ -131,7 +133,7 @@ export default function App() {
                 <div className="w-20 h-20 shimmer-btn rounded-full flex items-center justify-center shadow-lg">
                   <Mic size={40} color="white" strokeWidth={1.5}/>
                 </div>
-                <span className="text-purple-700 font-black text-xl">דברי! 🎤</span>
+                <span className="text-purple-700 font-black text-xl">דברי</span>
                 <span className="text-purple-300 font-bold text-xs text-center">תגידי מה תרצי<br/>ואני אצייר</span>
               </button>
               <button onClick={() => setMode("photo")}
@@ -139,7 +141,7 @@ export default function App() {
                 <div className="w-20 h-20 shimmer-btn rounded-full flex items-center justify-center shadow-lg">
                   <Camera size={40} color="white" strokeWidth={1.5}/>
                 </div>
-                <span className="text-purple-700 font-black text-xl">תמונה! 📸</span>
+                <span className="text-purple-700 font-black text-xl">תמונה</span>
                 <span className="text-purple-300 font-bold text-xs text-center">צלמי תמונה<br/>ואני אקשט אותה</span>
               </button>
             </div>
@@ -155,16 +157,18 @@ export default function App() {
 
             {/* Big instruction card — only when idle */}
             {isIdle && !transcript && (
-              <div className="card w-full px-6 py-5 text-center border-2 border-purple-100">
-                <p className="text-3xl font-black text-purple-800 leading-snug">
+              <div className="card w-full px-6 py-6 text-center border-2 border-purple-100">
+                <div className="flex justify-center mb-3">
                   {mode === "photo" && !photo
-                    ? "קודם בחרי תמונה 👆"
-                    : "דברי מה תרצי לצייר! 🎨"}
+                    ? <ImagePlus size={44} className="text-pink-400" strokeWidth={1.5}/>
+                    : <Paintbrush2 size={44} className="text-purple-500" strokeWidth={1.5}/>
+                  }
+                </div>
+                <p className="text-2xl font-black text-purple-800">
+                  {mode === "photo" && !photo ? "בחרי תמונה" : "דברי מה תרצי!"}
                 </p>
                 {mode === "voice" && (
-                  <p className="text-purple-400 font-bold mt-1">
-                    למשל: כלב ורוד, חד קרן, אנה ואלזה...
-                  </p>
+                  <p className="text-purple-300 font-bold text-sm mt-1">כלב ורוד • חד קרן • נסיכה</p>
                 )}
               </div>
             )}
@@ -186,12 +190,9 @@ export default function App() {
               disabled={mode === "photo" && !photo}
             />
 
-            {/* Bouncing arrow pointing UP to mic — only idle with no transcript */}
+            {/* Bouncing finger — points at mic */}
             {isIdle && !transcript && mode === "voice" && (
-              <div className="flex flex-col items-center gap-1 -mt-2 opacity-60">
-                <div className="text-2xl animate-bounce">👆</div>
-                <p className="text-purple-400 font-bold text-sm">לחצי כאן!</p>
-              </div>
+              <div className="text-3xl animate-bounce -mt-2 opacity-50">👆</div>
             )}
 
           </div>

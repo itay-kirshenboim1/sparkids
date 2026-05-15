@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Camera, Images, X } from "lucide-react";
+import { Camera, Images, X, CheckCircle2 } from "lucide-react";
 import CameraCapture from "./CameraCapture";
 
 export default function PhotoInput({ onPhoto }) {
@@ -33,7 +33,10 @@ export default function PhotoInput({ onPhoto }) {
         className="absolute top-3 left-3 w-9 h-9 bg-white/90 shadow rounded-full flex items-center justify-center text-gray-400 hover:text-red-400 transition-all">
         <X size={14}/>
       </button>
-      <p className="text-center text-purple-600 font-bold py-3 text-lg">✓ עכשיו דברי!</p>
+      <div className="flex items-center justify-center gap-2 py-3">
+        <CheckCircle2 size={22} className="text-purple-500" strokeWidth={2}/>
+        <span className="text-purple-600 font-black text-lg">עכשיו דברי!</span>
+      </div>
     </div>
   );
 
