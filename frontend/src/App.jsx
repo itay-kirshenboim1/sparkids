@@ -4,6 +4,7 @@ import ImageDisplay from "./components/ImageDisplay";
 import ShareModal from "./components/ShareModal";
 import PhotoInput from "./components/PhotoInput";
 import LoadingScreen from "./components/LoadingScreen";
+import Logo from "./components/Logo";
 import axios from "axios";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
@@ -90,8 +91,11 @@ export default function App() {
       {/* Header */}
       <div className="w-full bg-white/70 backdrop-blur-sm shadow-sm px-5 py-3 flex items-center justify-between mb-6 sticky top-0 z-10">
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 shimmer-btn rounded-xl flex items-center justify-center text-lg">🎨</div>
-          <span className="text-xl font-black text-purple-700">Sparkids</span>
+          <Logo size={40}/>
+          <span className="text-xl font-black bg-clip-text text-transparent"
+            style={{backgroundImage:"linear-gradient(90deg,#7c3aed,#ec4899)"}}>
+            Sparkids
+          </span>
         </div>
         <div className="flex items-center gap-3">
           {/* Back — one level */}
