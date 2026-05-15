@@ -8,8 +8,20 @@ import axios from "axios";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
-// Floating background decorations for girls
-const BG_DECO = ["🌸","⭐","🦋","🌺","✨","🌙","🎀","💫","🌷","🦄"];
+const BG_DECO = [
+  { e:"🌸", top:5,  left:5,  size:2.8, dur:3.8, delay:0   },
+  { e:"⭐", top:12, left:80, size:2.2, dur:4.2, delay:0.5 },
+  { e:"🦋", top:22, left:15, size:3.0, dur:5.0, delay:1.0 },
+  { e:"🌺", top:35, left:88, size:2.5, dur:4.5, delay:0.3 },
+  { e:"✨", top:48, left:3,  size:2.0, dur:3.2, delay:1.5 },
+  { e:"🌙", top:55, left:75, size:2.8, dur:4.8, delay:0.8 },
+  { e:"🎀", top:65, left:20, size:3.2, dur:3.5, delay:0.2 },
+  { e:"💫", top:72, left:60, size:2.3, dur:4.0, delay:1.2 },
+  { e:"🌷", top:82, left:8,  size:2.6, dur:5.2, delay:0.7 },
+  { e:"🦄", top:88, left:85, size:3.0, dur:3.9, delay:1.8 },
+  { e:"🍭", top:30, left:50, size:2.0, dur:4.3, delay:0.4 },
+  { e:"🌟", top:60, left:40, size:2.4, dur:3.6, delay:2.0 },
+];
 
 export default function App() {
   const [status, setStatus] = useState("idle");
@@ -59,16 +71,21 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col items-center pb-16 relative overflow-hidden" dir="rtl">
 
-      {/* Background floating decorations */}
+      {/* Animated background decorations */}
       {BG_DECO.map((d, i) => (
-        <span key={i} className="fixed select-none pointer-events-none opacity-20 text-3xl animate-float"
+        <span
+          key={i}
+          className="fixed select-none pointer-events-none deco"
           style={{
-            top: `${8 + (i * 9) % 85}%`,
-            left: `${(i * 13) % 90}%`,
-            animationDelay: `${i * 0.4}s`,
-            animationDuration: `${3 + (i % 3)}s`,
-          }}>
-          {d}
+            top: `${d.top}%`,
+            left: `${d.left}%`,
+            fontSize: `${d.size}rem`,
+            opacity: 0.22,
+            "--dur": `${d.dur}s`,
+            "--delay": `${d.delay}s`,
+          }}
+        >
+          {d.e}
         </span>
       ))}
 
