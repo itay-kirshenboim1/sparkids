@@ -1,10 +1,11 @@
 import { useRef, useState } from "react";
 import { Camera, Images, X } from "lucide-react";
+import CameraCapture from "./CameraCapture";
 
 export default function PhotoInput({ onPhoto }) {
-  const cameraRef  = useRef(null);
   const galleryRef = useRef(null);
-  const [preview, setPreview] = useState(null);
+  const [preview, setPreview]   = useState(null);
+  const [showCam, setShowCam]   = useState(false);
 
   function handleFile(e) {
     const file = e.target.files[0];
@@ -14,9 +15,14 @@ export default function PhotoInput({ onPhoto }) {
     reader.readAsDataURL(file);
   }
 
+  function handleCapture(dataUrl) {
+    setShowCam(false);
+    setPreview(dataUrl);
+    onPhoto(dataUrl);
+  }
+
   function clear() {
     setPreview(null); onPhoto(null);
-    if (cameraRef.current)  cameraRef.current.value  = "";
     if (galleryRef.current) galleryRef.current.value = "";
   }
 
@@ -32,21 +38,26 @@ export default function PhotoInput({ onPhoto }) {
   );
 
   return (
-    <div className="grid grid-cols-2 gap-4 animate-pop">
-      <label className="cursor-pointer">
-        <div className="card p-8 flex flex-col items-center gap-3 hover:shadow-xl transition-all active:scale-95 select-none">
+    <>
+      {showCam && <CameraCapture onCapture={handleCapture} onClose={() => setShowCam(false)}/>}
+
+      <div className="grid grid-cols-2 gap-4 animate-pop">
+        {/* Real camera */}
+        <button onClick={() => setShowCam(true)}
+          className="card p-8 flex flex-col items-center gap-3 hover:shadow-xl transition-all active:scale-95 select-none w-full">
           <Camera size={52} className="text-purple-500" strokeWidth={1.5}/>
           <span className="text-purple-700 font-black">צלמי</span>
-        </div>
-        <input ref={cameraRef} type="file" accept="image/*" capture="user" onChange={handleFile} className="hidden"/>
-      </label>
-      <label className="cursor-pointer">
-        <div className="card p-8 flex flex-col items-center gap-3 hover:shadow-xl transition-all active:scale-95 select-none">
-          <Images size={52} className="text-pink-500" strokeWidth={1.5}/>
-          <span className="text-purple-700 font-black">גלריה</span>
-        </div>
-        <input ref={galleryRef} type="file" accept="image/*" onChange={handleFile} className="hidden"/>
-      </label>
-    </div>
+        </button>
+
+        {/* Gallery */}
+        <label className="cursor-pointer">
+          <div className="card p-8 flex flex-col items-center gap-3 hover:shadow-xl transition-all active:scale-95 select-none">
+            <Images size={52} className="text-pink-500" strokeWidth={1.5}/>
+            <span className="text-purple-700 font-black">גלריה</span>
+          </div>
+          <input ref={galleryRef} type="file" accept="image/*" onChange={handleFile} className="hidden"/>
+        </label>
+      </div>
+    </>
   );
 }

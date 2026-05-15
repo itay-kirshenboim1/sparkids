@@ -62,14 +62,23 @@ export default function ImageDisplay({ imageUrl, promptUsed, onShare, onReset, o
         onMouseDown={startFeedback}
         onTouchStart={(e) => { e.preventDefault(); startFeedback(); }}
         disabled={improving}
-        className={`w-full py-4 rounded-2xl font-black text-lg transition-all select-none flex items-center justify-center gap-3
-          ${improving ? "bg-purple-100 text-purple-400 cursor-not-allowed" :
-            listening  ? "bg-red-500 text-white shadow-lg" :
-            "shimmer-btn text-white shadow-lg hover:opacity-90 active:scale-95"}`}
+        className={`w-full py-4 px-5 rounded-2xl font-black text-lg transition-all select-none flex items-center gap-3
+          ${improving ? "bg-purple-100 text-purple-400 cursor-not-allowed justify-center" :
+            listening  ? "bg-red-500 text-white shadow-lg justify-start" :
+            "shimmer-btn text-white shadow-lg hover:opacity-90 active:scale-95 justify-center"}`}
       >
-        <Wand2 size={22} strokeWidth={2}/>
-        <span>{improving ? "משפרת..." : listening ? (liveText || "מקשיבה...") : "שפרי את הציור"}</span>
+        <Wand2 size={22} strokeWidth={2} className="shrink-0"/>
+        <span className={listening ? "text-right leading-snug" : ""}>
+          {improving ? "משפרת..." : listening ? (liveText || "מקשיבה...") : "שפרי את הציור"}
+        </span>
       </button>
+
+      {/* Live transcript card */}
+      {listening && liveText && (
+        <div className="card px-5 py-3 text-center animate-pop border-2 border-red-100">
+          <p className="text-purple-700 font-bold text-lg leading-snug">{liveText}</p>
+        </div>
+      )}
 
       {/* Actions */}
       <div className="grid grid-cols-3 gap-3">
