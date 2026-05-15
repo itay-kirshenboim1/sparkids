@@ -1,12 +1,17 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import paint, share
 
 app = FastAPI(title="Sparkids API")
 
+origins = ["http://localhost:5173"]
+if frontend := os.getenv("FRONTEND_URL"):
+    origins.append(frontend)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
