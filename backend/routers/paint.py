@@ -1,12 +1,20 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from services.ai import make_kid_prompt, generate_image
+from typing import Optional
+from services.ai import make_kid_prompt, make_improve_prompt, generate_image, generate_image_from_photo
 
 router = APIRouter()
 
 
 class PaintRequest(BaseModel):
     idea: str
+    kid_name: str
+    photo: Optional[str] = None  # base64 data URL
+
+
+class ImproveRequest(BaseModel):
+    feedback: str
+    previous_prompt: str
     kid_name: str
 
 
@@ -16,9 +24,19 @@ class PaintResponse(BaseModel):
 
 
 @router.post("/", response_model=PaintResponse)
-async def paint(req: PaintRequest):
-    if len(req.idea.strip()) < 3:
-        raise HTTPException(400, "Tell me more about what you want to paint!")
-    prompt = make_kid_prompt(req.idea)
+def paint(req: PaintRequest):
+    if len(req.idea.strip()) < 1:
+        raise HTTPException(400, "תגידי לי מה לצייר!")
+    prompt = make_kid_prompt(req.idea, has_photo=bool(req.photo))
+    if req.photo:
+        image_url = generate_image_from_photo(prompt, req.photo)
+    else:
+        image_url = generate_image(prompt)
+    return PaintResponse(image_url=image_url, prompt_used=prompt)
+
+
+@router.post("/improve", response_model=PaintResponse)
+def improve(req: ImproveRequest):
+    prompt = make_improve_prompt(req.feedback, req.previous_prompt)
     image_url = generate_image(prompt)
     return PaintResponse(image_url=image_url, prompt_used=prompt)
