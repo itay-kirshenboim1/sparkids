@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Sparkles } from "lucide-react";
 
 const MESSAGES = [
   { icon: "🦄", text: "החד-קרן מכין את הצבעים..." },
@@ -28,7 +29,9 @@ export default function LoadingScreen() {
       <div className="text-8xl animate-float">{icon}</div>
       <div>
         <p className="text-2xl font-black text-purple-700">{text}</p>
-        <p className="text-gray-400 mt-1 font-medium text-sm">רק עוד שנייה... 🎨</p>
+        <p className="text-gray-400 mt-1 font-medium text-sm flex items-center justify-center gap-1">
+          רק עוד שנייה... <Sparkles size={14} className="text-purple-300"/>
+        </p>
       </div>
       <div className="flex gap-2">
         {[0,1,2].map(i => (
